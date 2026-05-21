@@ -224,7 +224,7 @@ _Placeholders for your UI screenshots_
 - **Bekam Genene** - _Lead Developer_ - [GitHub](https://github.com/Bekamgenene)
 - **Begonet Debebe** - _Lead Developer_ - [GitHub](https://github.com/bego-net)
 - **Kenenisa Beyan** - _Lead Developer_ - [GitHub](https://github.com/kenenisabeyan)
-- **Yabsra Goitom** - _Lead Developer_ - [GitHub](https://github.com/yeabsira23)
+- **Yeabsira Goitom** - _Lead Developer_ - [GitHub](https://github.com/yeabsira23)
 
 ---
 
