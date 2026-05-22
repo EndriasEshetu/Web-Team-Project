@@ -126,4 +126,8 @@ const AdminLayout = () => {
   );
 };
 
+<<<<<<< Updated upstream
 export default AdminLayout;
+=======
+export default AdminLayout;
+>>>>>>> Stashed changes
