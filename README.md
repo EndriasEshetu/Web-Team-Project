@@ -11,14 +11,37 @@ A professional, full-stack Hospital Management System designed to streamline hos
 
 ---
 
-| CSE ASTU Student Web Programming Team Project      |
-| -------------------------------------------------- | ------------ |
-| Group Members                                      | ID_No.       |
-| [Bekam Genene](https://github.com/Bekamgenene)     | UGR/30253/15 |
-| [Begonet Debebe](https://github.com/bego-net)      | UGR/30244/15 |
-| [Endrias Eshetu](https://github.com/EndriasEshetu) | UGR/30469/15 |
-| [Kenenisa Beyan](https://github.com/kenenisabeyan) | UGR/30772/15 |
-| [Yeabsira Goitom](https://github.com/yeabsira23)   | UGR/31390/15 |
+<table>
+  <tr>
+    <th colspan="2" align="center">
+      CSE ASTU Student Web Programming Team Project
+    </th>
+  </tr>
+  <tr>
+    <th>Group Members</th>
+    <th>ID_No.</th>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/Bekamgenene">Bekam Genene</a></td>
+    <td>UGR/30253/15</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/bego-net">Begonet Debebe</a></td>
+    <td>UGR/30244/15</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/EndriasEshetu">Endrias Eshetu</a></td>
+    <td>UGR/30469/15</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/kenenisabeyan">Kenenisa Beyan</a></td>
+    <td>UGR/30772/15</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/yeabsira23">Yeabsira Goitom</a></td>
+    <td>UGR/31390/15</td>
+  </tr>
+</table>
 
 ---
 
