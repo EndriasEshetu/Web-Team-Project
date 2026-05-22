@@ -11,6 +11,17 @@ A professional, full-stack Hospital Management System designed to streamline hos
 
 ---
 
+| CSE ASTU Student Web Programming Team Project      |              |
+| -------------------------------------------------- | ------------ |
+| Group Members                                      | ID_No.       |
+| [Bekam Genene](https://github.com/Bekamgenene)     | UGR/30253/15 |
+| [Begonet Debebe](https://github.com/bego-net)      | UGR/30244/15 |
+| [Endrias Eshetu](https://github.com/EndriasEshetu) | UGR/30469/15 |
+| [Kenenisa Beyan](https://github.com/kenenisabeyan) | UGR/30772/15 |
+| [Yeabsira Goitom](https://github.com/yeabsira23)   | UGR/31390/15 |
+
+---
+
 ## ✨ Features
 
 ### 🔐 Authentication & Security
@@ -170,16 +181,6 @@ The app will be available at `http://localhost:5173`.
 | `PATCH` | `/api/appointments/:id` | Update appointment status        |
 | `GET`   | `/api/doctors`          | List all doctors                 |
 | `GET`   | `/api/patients/:id`     | Get patient profile & records    |
-
----
-
-## 🖼️ Screenshots
-
-_Placeholders for your UI screenshots_
-
-- [ ] Dashboard Overview
-- [ ] Appointment Booking
-- [ ] Patient Records View
 
 ---
 
