@@ -81,7 +81,7 @@ const Homepage = () => {
             {/* RIGHT MOCKUP */}
             <div className="relative hidden lg:block">
               <div className="absolute -inset-4 bg-blue-500/20 rounded-[40px] blur-3xl"></div>
-              <div className="relative bg-[#1f2937] border border-white/10 rounded-3xl shadow-2xl overflow-hidden min-h-[500px]">
+              <div className="relative bg-[#1f2937] border border-white/10 rounded-3xl shadow-2xl overflow-hidden min-h-125">
                 <div className="grid grid-cols-[220px_1fr] h-full">
                   {/* Sidebar */}
                   <div className="border-r border-white/10 p-5 bg-black/20">
@@ -266,7 +266,7 @@ const FeatureMiniCard = ({ icon, title, desc, color }) => (
 );
 
 const FeatureCard = ({ icon, title, desc }) => (
-  <div className="bg-white/5 border border-white/10 rounded-[32px] p-8 hover:bg-white/10 transition group">
+  <div className="bg-white/5 border border-white/10 rounded-4xl p-8 hover:bg-white/10 transition group">
     <div className="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center text-blue-300 mb-6 group-hover:bg-blue-500 group-hover:text-white transition-all duration-300">
       {icon}
     </div>
