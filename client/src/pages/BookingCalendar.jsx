@@ -304,4 +304,5 @@ const CheckCircle2 = ({ size, className }) => (
   </svg>
 );
 
+export default BookingCalendar;
 
