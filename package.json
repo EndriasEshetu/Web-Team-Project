@@ -1,5 +1,5 @@
 {
-  "name": "appointment-management-system",
+  "name": "web-team-project",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EndriasEshetu/Appointment-management-system.git"
+    "url": "git+https://github.com/EndriasEshetu/Web-Team-Project.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/EndriasEshetu/Appointment-management-system/issues"
+    "url": "https://github.com/EndriasEshetu/Web-Team-Project/issues"
   },
-  "homepage": "https://github.com/EndriasEshetu/Appointment-management-system#readme",
+  "homepage": "https://github.com/EndriasEshetu/Web-Team-Project#readme",
   "description": "",
   "devDependencies": {
     "@tailwindcss/vite": "^4.2.4",
