@@ -202,3 +202,52 @@ const AdminDashboard = () => {
         </div>
       </div>
 
+      <div className="bg-[#1f2937] border border-gray-800 rounded-2xl p-6 shadow-xl">
+        <h2 className="text-lg font-semibold text-white mb-5">
+          Recent Appointments
+        </h2>
+        <div className="space-y-3">
+          {(data?.recentAppointments || []).length === 0 ? (
+            <p className="text-sm text-gray-500 py-6 text-center">
+              No appointments found.
+            </p>
+          ) : (
+            data.recentAppointments.map((appointment) => (
+              <div
+                key={appointment._id}
+                className="bg-[#111827] rounded-xl border border-gray-800 p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+              >
+                <div>
+                  <p className="text-white font-medium">
+                    {appointment.patientId?.name || "Unknown Patient"}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    Dr. {appointment.doctorId?.name || "Unknown Doctor"}
+                  </p>
+                  <p className="text-xs text-gray-400 mt-1">
+                    {new Date(appointment.appointmentDateTime).toLocaleString(
+                      "en-US",
+                      {
+                        weekday: "short",
+                        month: "short",
+                        day: "numeric",
+                        hour: "numeric",
+                        minute: "2-digit",
+                      },
+                    )}
+                  </p>
+                </div>
+                <span className="text-xs font-medium px-3 py-1 rounded-full border border-gray-700 text-gray-200 w-fit">
+                  {appointment.status}
+                </span>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AdminDashboard;
+
