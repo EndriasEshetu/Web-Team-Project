@@ -1,332 +1,308 @@
-import { useState } from "react";
-import {
-  useMyAvailability,
-  useCreateAvailability,
-  useUpdateAvailability,
-} from "../hooks/useAvailability";
+import { useState, useMemo } from "react";
+import { Search, Filter, Calendar as CalendarIcon, User, ChevronRight, LayoutGrid, List } from "lucide-react";
+import { useDoctors, useBookAppointment } from "../hooks/usePatient";
+import { usePublicAvailability } from "../hooks/useAvailability";
 
-const DAYS = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
+import { useNavigate } from "react-router-dom";
+import DoctorCard from "../components/DoctorCard";
+import DoctorDetailsPanel from "../components/DoctorDetailsPanel";
+import TimeSlotPicker from "../components/TimeSlotPicker";
+import BookingSummary from "../components/BookingSummary";
 
-const emptyForm = {
-  dayOfWeek: 1,
-  startTime: "09:00",
-  endTime: "17:00",
-  isAvailable: true,
-};
+const BookingCalendar = () => {
+  const navigate = useNavigate();
+  const { data: doctors = [], isLoading, isError } = useDoctors();
+  const { data: allAvailability = [] } = usePublicAvailability();
+  const bookMutation = useBookAppointment();
 
-const AvailabilityManager = () => {
-  const { data: slots = [], isLoading, isError } = useMyAvailability();
-  const createMutation = useCreateAvailability();
-  const updateMutation = useUpdateAvailability();
+  // Booking Flow State
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [notes, setNotes] = useState("");
 
-  const [form, setForm] = useState(emptyForm);
-  const [editingId, setEditingId] = useState(null);
-  const [showForm, setShowForm] = useState(false);
-  const [successMsg, setSuccessMsg] = useState("");
+  // UI State
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterDept, setFilterDept] = useState("All Departments");
+  const [filterSpec, setFilterSpec] = useState("All Specializations");
 
-  // Flash a success message for 3 seconds
-  const flashSuccess = (msg) => {
-    setSuccessMsg(msg);
-    setTimeout(() => setSuccessMsg(""), 3000);
+  // Get unique departments and specializations for filters
+  const departments = useMemo(() => 
+    ["All Departments", ...new Set(doctors.map(d => d.department).filter(Boolean))], 
+    [doctors]
+  );
+  const specializations = useMemo(() => 
+    ["All Specializations", ...new Set(doctors.map(d => d.specialization).filter(Boolean))], 
+    [doctors]
+  );
+
+  const filteredDoctors = useMemo(() => {
+    return doctors.filter((doc) => {
+      const nameMatch = doc.userId?.name?.toLowerCase().includes(searchQuery.toLowerCase());
+      const deptMatch = filterDept === "All Departments" || doc.department === filterDept;
+      const specMatch = filterSpec === "All Specializations" || doc.specialization === filterSpec;
+      const isActive = doc.isActive !== false && doc.userId?.isActive !== false;
+      return nameMatch && deptMatch && specMatch && isActive;
+    });
+  }, [doctors, searchQuery, filterDept, filterSpec]);
+
+  const handleSelectDoctor = (doctor) => {
+    setSelectedDoctor(doctor);
+    setSelectedDate(null);
+    setSelectedTime(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : name === "dayOfWeek" ? Number(value) : value,
-    }));
+  const handleSelectDate = (date) => {
+    setSelectedDate(date);
+    setSelectedTime(null);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleConfirmBooking = () => {
+    if (!selectedDoctor || !selectedDate || !selectedTime) return;
 
-    if (editingId) {
-      updateMutation.mutate(
-        { id: editingId, ...form },
-        {
-          onSuccess: () => {
-            flashSuccess("Slot updated successfully!");
-            resetForm();
-          },
-        }
-      );
-    } else {
-      createMutation.mutate(form, {
+    const dateTimeString = `${selectedDate}T${selectedTime}:00`;
+    const appointmentDateTime = new Date(dateTimeString);
+
+    bookMutation.mutate(
+      {
+        doctorId: selectedDoctor.userId?._id,
+        appointmentDateTime,
+        notes,
+      },
+      {
         onSuccess: () => {
-          flashSuccess("Slot created successfully!");
-          resetForm();
+          setTimeout(() => {
+            navigate("/patient/appointments");
+          }, 2000);
         },
-      });
-    }
+      }
+    );
   };
 
-  const startEdit = (slot) => {
-    setForm({
-      dayOfWeek: slot.dayOfWeek,
-      startTime: slot.startTime,
-      endTime: slot.endTime,
-      isAvailable: slot.isAvailable,
-    });
-    setEditingId(slot._id);
-    setShowForm(true);
+  const resetFlow = () => {
+    setSelectedDoctor(null);
+    setSelectedDate(null);
+    setSelectedTime(null);
+    setNotes("");
   };
 
-  const toggleAvailability = (slot) => {
-    updateMutation.mutate({
-      id: slot._id,
-      isAvailable: !slot.isAvailable,
-    });
-  };
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 space-y-4">
+        <div className="w-12 h-12 border-4 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin" />
+        <p className="text-gray-400 animate-pulse">Loading amazing doctors...</p>
+      </div>
+    );
+  }
 
-  const resetForm = () => {
-    setForm(emptyForm);
-    setEditingId(null);
-    setShowForm(false);
-  };
-
-  const isMutating = createMutation.isPending || updateMutation.isPending;
-  const mutationError = createMutation.error || updateMutation.error;
+  if (isError) {
+    return (
+      <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-8 text-center">
+        <p className="text-red-400 font-medium">Failed to load doctor availability. Please try again later.</p>
+      </div>
+    );
+  }
 
   return (
-    <div>
+    <div className="max-w-7xl mx-auto space-y-8 pb-20">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-wide">
-            Availability Management
+          <h1 className="text-3xl font-bold text-white tracking-tight">
+            Book an Appointment
           </h1>
-          <p className="text-sm text-gray-400 mt-1">
-            Manage your weekly working hours
+          <p className="text-gray-400 mt-2 flex items-center gap-2">
+            {selectedDoctor ? (
+              <>
+                <span className="hover:text-emerald-400 cursor-pointer transition-colors" onClick={resetFlow}>Doctors</span>
+                <ChevronRight size={14} />
+                <span className="text-emerald-400 font-medium">Dr. {selectedDoctor.userId?.name}</span>
+              </>
+            ) : (
+              "Find the right specialist and schedule your visit in seconds."
+            )}
           </p>
         </div>
-        {!showForm && (
-          <button
-            onClick={() => setShowForm(true)}
-            className="px-4 py-2 bg-[#10b981] text-white text-sm font-medium rounded-lg hover:bg-emerald-600 transition-colors"
-          >
-            + Add Slot
-          </button>
-        )}
       </div>
 
-      {/* Success / Error messages  */}
-      {successMsg && (
-        <div className="mb-4 p-3 text-sm text-green-700 bg-green-100 rounded-lg">
-          {successMsg}
-        </div>
-      )}
-      {mutationError && (
-        <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 rounded-lg">
-          {mutationError.response?.data?.message || "Something went wrong"}
-        </div>
-      )}
-
-      {/* Add / Edit Form */}
-      {showForm && (
-        <form
-          onSubmit={handleSubmit}
-          className="mb-6 p-6 bg-[#1f2937] rounded-xl shadow-xl border border-gray-700"
-        >
-          <h2 className="text-lg font-semibold text-white tracking-wide mb-4">
-            {editingId ? "Edit Slot" : "Add New Slot"}
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {/* Day */}
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">
-                Day of Week
-              </label>
-              <select
-                name="dayOfWeek"
-                value={form.dayOfWeek}
-                onChange={handleChange}
-                className="w-full px-3 py-2 bg-[#111827] border border-gray-700 text-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-[#10b981] focus:border-[#10b981]"
-              >
-                {DAYS.map((day, i) => (
-                  <option key={i} value={i}>
-                    {day}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Start time */}
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">
-                Start Time
-              </label>
-              <input
-                type="time"
-                name="startTime"
-                value={form.startTime}
-                onChange={handleChange}
-                className="w-full px-3 py-2 bg-[#111827] border border-gray-700 text-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-[#10b981] focus:border-[#10b981] [color-scheme:dark]"
-              />
-            </div>
-
-            {/* End time */}
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">
-                End Time
-              </label>
-              <input
-                type="time"
-                name="endTime"
-                value={form.endTime}
-                onChange={handleChange}
-                className="w-full px-3 py-2 bg-[#111827] border border-gray-700 text-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-[#10b981] focus:border-[#10b981] [color-scheme:dark]"
-              />
-            </div>
-
-            {/* Available */}
-            <div className="flex items-end pb-1">
-              <label className="flex items-center gap-2 cursor-pointer">
+      {!selectedDoctor ? (
+        <>
+          {/* Filters Section */}
+          <div className="bg-[#1f2937] border border-gray-800 rounded-2xl p-4 md:p-6 shadow-xl space-y-4">
+            <div className="flex flex-col lg:flex-row gap-4">
+              <div className="relative flex-1">
+                <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
                 <input
-                  type="checkbox"
-                  name="isAvailable"
-                  checked={form.isAvailable}
-                  onChange={handleChange}
-                  className="w-4 h-4 text-[#10b981] bg-[#111827] border-gray-700 rounded focus:ring-[#10b981] focus:ring-offset-gray-900"
+                  type="text"
+                  placeholder="Search doctors by name..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-[#111827] border border-gray-700 rounded-xl pl-12 pr-4 py-3 text-sm text-gray-200 outline-none focus:border-emerald-500 transition-all"
                 />
-                <span className="text-sm text-gray-300">Available</span>
-              </label>
-            </div>
-          </div>
-
-          <div className="flex gap-3 mt-6">
-            <button
-              type="submit"
-              disabled={isMutating}
-              className="px-5 py-2 bg-[#10b981] text-white text-sm font-medium rounded-lg hover:bg-emerald-600 disabled:opacity-50 transition-colors shadow-lg shadow-emerald-900/20"
-            >
-              {isMutating
-                ? "Saving..."
-                : editingId
-                ? "Update Slot"
-                : "Create Slot"}
-            </button>
-            <button
-              type="button"
-              onClick={resetForm}
-              className="px-5 py-2 bg-gray-700 text-gray-300 text-sm font-medium rounded-lg hover:bg-gray-600 transition-colors"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      )}
-
-      {/* Slots List */}
-      {isLoading ? (
-        <div className="text-center py-12 text-gray-400">Loading slots...</div>
-      ) : isError ? (
-        <div className="text-center py-12 text-red-400">
-          Failed to load availability data.
-        </div>
-      ) : slots.length === 0 ? (
-        <div className="text-center py-12 bg-[#1f2937] rounded-xl shadow-xl border border-gray-800">
-          <p className="text-gray-300">No availability slots yet.</p>
-          <p className="text-sm text-gray-500 mt-1">
-            Click "Add Slot" to define your working hours.
-          </p>
-        </div>
-      ) : (
-        <div className="bg-[#1f2937] rounded-xl shadow-xl border border-gray-800 overflow-hidden">
-          {/* Desktop Table View */}
-          <div className="hidden md:block overflow-x-auto">
-            <table className="w-full text-sm text-left">
-              <thead>
-                <tr className="bg-[#111827] border-b border-gray-800">
-                  <th className="px-6 py-4 font-semibold text-gray-300">Day</th>
-                  <th className="px-6 py-4 font-semibold text-gray-300">Start Time</th>
-                  <th className="px-6 py-4 font-semibold text-gray-300">End Time</th>
-                  <th className="px-6 py-4 font-semibold text-gray-300">Status</th>
-                  <th className="px-6 py-4 text-right font-semibold text-gray-300">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-800">
-                {slots.map((slot) => (
-                  <tr key={slot._id} className="hover:bg-white/5 transition-colors">
-                    <td className="px-6 py-4 font-medium text-white">{DAYS[slot.dayOfWeek]}</td>
-                    <td className="px-6 py-4 text-gray-400">{slot.startTime}</td>
-                    <td className="px-6 py-4 text-gray-400">{slot.endTime}</td>
-                    <td className="px-6 py-4">
-                      <span className={`inline-flex px-3 py-1 rounded-full text-xs font-semibold ${
-                        slot.isAvailable ? "bg-emerald-500/10 text-emerald-400" : "bg-gray-800 text-gray-500"
-                      }`}>
-                        {slot.isAvailable ? "Available" : "Unavailable"}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <div className="flex justify-end gap-2">
-                        <button
-                          onClick={() => toggleAvailability(slot)}
-                          className="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 border border-gray-700 text-gray-300 hover:bg-gray-700 transition-all"
-                        >
-                          {slot.isAvailable ? "Disable" : "Enable"}
-                        </button>
-                        <button
-                          onClick={() => startEdit(slot)}
-                          className="px-3 py-1.5 text-xs font-medium rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500/20 transition-all"
-                        >
-                          Edit
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Mobile Card View */}
-          <div className="md:hidden divide-y divide-gray-800">
-            {slots.map((slot) => (
-              <div key={slot._id} className="p-4 space-y-3 hover:bg-white/5 transition-colors">
-                <div className="flex justify-between items-center">
-                  <p className="font-bold text-white">{DAYS[slot.dayOfWeek]}</p>
-                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                    slot.isAvailable ? "bg-emerald-500/10 text-emerald-400" : "bg-gray-800 text-gray-500"
-                  }`}>
-                    {slot.isAvailable ? "Available" : "Unavailable"}
-                  </span>
-                </div>
-                <div className="flex gap-4 text-sm text-gray-400">
-                  <p><span className="text-gray-500">From:</span> {slot.startTime}</p>
-                  <p><span className="text-gray-500">To:</span> {slot.endTime}</p>
-                </div>
-                <div className="flex gap-2 pt-2">
-                  <button
-                    onClick={() => toggleAvailability(slot)}
-                    className="flex-1 py-2 text-xs font-medium rounded-lg bg-gray-800 border border-gray-700 text-gray-300"
+              </div>
+              
+              <div className="flex flex-wrap gap-4">
+                <div className="relative">
+                  <Filter size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+                  <select
+                    value={filterDept}
+                    onChange={(e) => setFilterDept(e.target.value)}
+                    className="bg-[#111827] border border-gray-700 rounded-xl pl-10 pr-8 py-3 text-sm text-gray-200 outline-none focus:border-emerald-500 appearance-none cursor-pointer min-w-[180px]"
                   >
-                    {slot.isAvailable ? "Disable" : "Enable"}
-                  </button>
-                  <button
-                    onClick={() => startEdit(slot)}
-                    className="flex-1 py-2 text-xs font-medium rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20"
+                    {departments.map(dept => (
+                      <option key={dept} value={dept}>{dept}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="relative">
+                  <Stethoscope size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+                  <select
+                    value={filterSpec}
+                    onChange={(e) => setFilterSpec(e.target.value)}
+                    className="bg-[#111827] border border-gray-700 rounded-xl pl-10 pr-8 py-3 text-sm text-gray-200 outline-none focus:border-emerald-500 appearance-none cursor-pointer min-w-[180px]"
                   >
-                    Edit
-                  </button>
+                    {specializations.map(spec => (
+                      <option key={spec} value={spec}>{spec}</option>
+                    ))}
+                  </select>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
-        </div>
 
+          {/* Doctor List */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filteredDoctors.length > 0 ? (
+              filteredDoctors.map((doc) => (
+                <DoctorCard 
+                  key={doc._id} 
+                  doctor={doc} 
+                  onSelect={handleSelectDoctor} 
+                />
+              ))
+            ) : (
+              <div className="col-span-full py-20 text-center bg-[#1f2937] border border-dashed border-gray-800 rounded-2xl">
+                <div className="inline-flex p-4 rounded-full bg-gray-800/50 text-gray-500 mb-4">
+                  <Search size={32} />
+                </div>
+                <h3 className="text-lg font-medium text-white">No doctors found</h3>
+                <p className="text-gray-400 mt-1">Try adjusting your search or filters to find what you're looking for.</p>
+              </div>
+            )}
+          </div>
+        </>
+      ) : (
+        <div className="space-y-12">
+          {/* Step 1 & 2: Doctor Details & Date Selection */}
+          <DoctorDetailsPanel 
+            doctor={selectedDoctor} 
+            onBack={resetFlow}
+            selectedDate={selectedDate}
+            onSelectDate={handleSelectDate}
+            availability={allAvailability.filter(a => a.businessId?._id === selectedDoctor.userId?._id)}
+          />
+
+          {/* Step 3: Time Selection */}
+          {selectedDate && (
+            <TimeSlotPicker 
+              selectedDate={selectedDate}
+              selectedTime={selectedTime}
+              onSelectTime={setSelectedTime}
+              availability={allAvailability.filter(a => a.businessId?._id === selectedDoctor.userId?._id)}
+            />
+          )}
+
+          {/* Step 4: Summary & Booking */}
+          {selectedTime && (
+            <div className="max-w-2xl mx-auto">
+              {bookMutation.isSuccess && (
+                <div className="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-center gap-3 text-emerald-400 animate-in fade-in slide-in-from-top-4">
+                  <CheckCircle2 size={20} />
+                  <p className="font-medium">Appointment booked successfully! Redirecting...</p>
+                </div>
+              )}
+              {bookMutation.isError && (
+                <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center gap-3 text-red-400 animate-in fade-in slide-in-from-top-4">
+                  <XCircle size={20} />
+                  <p className="font-medium">{bookMutation.error.response?.data?.message || "Booking failed. Please try again."}</p>
+                </div>
+              )}
+              
+              <BookingSummary 
+                doctor={selectedDoctor}
+                date={selectedDate}
+                time={selectedTime}
+                notes={notes}
+                setNotes={setNotes}
+                onConfirm={handleConfirmBooking}
+                isBooking={bookMutation.isPending}
+              />
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
 };
 
-export default AvailabilityManager;
+// Simple icon wrapper for the select components
+const Stethoscope = ({ size, className }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className}
+  >
+    <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3" />
+    <path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4" />
+    <circle cx="20" cy="10" r="2" />
+  </svg>
+);
+
+const XCircle = ({ size, className }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className}
+  >
+    <circle cx="12" cy="12" r="10" />
+    <path d="m15 9-6 6" />
+    <path d="m9 9 6 6" />
+  </svg>
+);
+
+const CheckCircle2 = ({ size, className }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className}
+  >
+    <circle cx="12" cy="12" r="10" />
+    <path d="m9 12 2 2 4-4" />
+  </svg>
+);
+
+export default BookingCalendar;
+
