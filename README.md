@@ -11,7 +11,7 @@ A professional, full-stack Hospital Management System designed to streamline hos
 
 ---
 
-| CSE ASTU Student Web Programming Team Project      |              |
+| CSE ASTU Student Web Programming Team Project      |
 | -------------------------------------------------- | ------------ |
 | Group Members                                      | ID_No.       |
 | [Bekam Genene](https://github.com/Bekamgenene)     | UGR/30253/15 |
@@ -216,16 +216,6 @@ The app will be available at `http://localhost:5173`.
 - **CORS Errors**: Ensure the `CLIENT_URL` in the backend environment matches your frontend URL exactly.
 - **DB Connection**: Verify that your IP is whitelisted in MongoDB Atlas.
 - **Reminders Not Working**: Ensure your Trigger.dev worker is running or the secret keys are correct.
-
----
-
-## 🤝 Contributors
-
-- **Endrias Eshetu** - _Lead Developer_ - [GitHub](https://github.com/EndriasEshetu)
-- **Bekam Genene** - _Lead Developer_ - [GitHub](https://github.com/Bekamgenene)
-- **Begonet Debebe** - _Lead Developer_ - [GitHub](https://github.com/bego-net)
-- **Kenenisa Beyan** - _Lead Developer_ - [GitHub](https://github.com/kenenisabeyan)
-- **Yeabsira Goitom** - _Lead Developer_ - [GitHub](https://github.com/yeabsira23)
 
 ---
 
