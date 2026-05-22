@@ -175,6 +175,80 @@ const Homepage = () => {
           </div>
         </section>
 
+        {/* FEATURES SECTION */}
+        <section className="py-24 bg-[#14314f]/60 relative overflow-hidden">
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 blur-[120px] rounded-full"></div>
+          <div className="max-w-7xl mx-auto px-6 md:px-12 relative">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <h2 className="text-4xl font-bold text-white mb-6">
+                Everything Needed for Modern Hospital Operations
+              </h2>
+              <p className="text-lg text-blue-100/70">
+                Our comprehensive platform streamlines every aspect of hospital
+                management, from patient check-in to clinical documentation.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              <FeatureCard
+                icon={<Users />}
+                title="Manage Patients"
+                desc="Comprehensive patient profiles, history tracking, and demographic management."
+              />
+              <FeatureCard
+                icon={<Clock />}
+                title="Doctor Scheduling"
+                desc="Manage complex shifts, leave requests, and real-time clinic availability."
+              />
+              <FeatureCard
+                icon={<Calendar />}
+                title="Appointment Management"
+                desc="Intelligent booking system with automated reminders and waitlist support."
+              />
+              <FeatureCard
+                icon={<FileText />}
+                title="Medical Records"
+                desc="Secure digital records for diagnoses, lab results, and clinical notes."
+              />
+              <FeatureCard
+                icon={<LayoutDashboard />}
+                title="Admin Dashboard"
+                desc="Full visibility into hospital metrics, staff performance, and patient flow."
+              />
+              <FeatureCard
+                icon={<Database />}
+                title="Centralized Operations"
+                desc="Keep all hospital data synchronized across departments and devices."
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* CTA SECTION */}
+        <section className="max-w-7xl mx-auto px-6 md:px-12 py-24">
+          <div className="bg-linear-to-r from-blue-600 to-blue-500 rounded-[40px] p-12 text-center relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 blur-3xl rounded-full -mr-20 -mt-20 transition-transform group-hover:scale-110"></div>
+            <div className="relative">
+              <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+                Start Managing Your Hospital <br /> Smarter Today
+              </h2>
+              <p className="text-blue-100/90 text-lg mb-10 max-w-xl mx-auto">
+                Join our network of modern healthcare providers and experience
+                the future of clinical management.
+              </p>
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <a
+                  href="/register"
+                  className="bg-white text-blue-600 px-10 py-4 rounded-2xl font-bold text-lg hover:bg-blue-50 transition-colors flex items-center justify-center gap-2"
+                >
+                  Get Started for Free
+                  <ArrowRight size={20} />
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* TEAM MEMBERS SECTION */}
         <section className="py-20 bg-[#21486b]">
           <div className="max-w-5xl mx-auto px-6 md:px-12">
@@ -283,80 +357,6 @@ const Homepage = () => {
                     </tr>
                   </tbody>
                 </table>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* FEATURES SECTION */}
-        <section className="py-24 bg-[#14314f]/60 relative overflow-hidden">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 blur-[120px] rounded-full"></div>
-          <div className="max-w-7xl mx-auto px-6 md:px-12 relative">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <h2 className="text-4xl font-bold text-white mb-6">
-                Everything Needed for Modern Hospital Operations
-              </h2>
-              <p className="text-lg text-blue-100/70">
-                Our comprehensive platform streamlines every aspect of hospital
-                management, from patient check-in to clinical documentation.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              <FeatureCard
-                icon={<Users />}
-                title="Manage Patients"
-                desc="Comprehensive patient profiles, history tracking, and demographic management."
-              />
-              <FeatureCard
-                icon={<Clock />}
-                title="Doctor Scheduling"
-                desc="Manage complex shifts, leave requests, and real-time clinic availability."
-              />
-              <FeatureCard
-                icon={<Calendar />}
-                title="Appointment Management"
-                desc="Intelligent booking system with automated reminders and waitlist support."
-              />
-              <FeatureCard
-                icon={<FileText />}
-                title="Medical Records"
-                desc="Secure digital records for diagnoses, lab results, and clinical notes."
-              />
-              <FeatureCard
-                icon={<LayoutDashboard />}
-                title="Admin Dashboard"
-                desc="Full visibility into hospital metrics, staff performance, and patient flow."
-              />
-              <FeatureCard
-                icon={<Database />}
-                title="Centralized Operations"
-                desc="Keep all hospital data synchronized across departments and devices."
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* CTA SECTION */}
-        <section className="max-w-7xl mx-auto px-6 md:px-12 py-24">
-          <div className="bg-linear-to-r from-blue-600 to-blue-500 rounded-[40px] p-12 text-center relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 blur-3xl rounded-full -mr-20 -mt-20 transition-transform group-hover:scale-110"></div>
-            <div className="relative">
-              <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-                Start Managing Your Hospital <br /> Smarter Today
-              </h2>
-              <p className="text-blue-100/90 text-lg mb-10 max-w-xl mx-auto">
-                Join our network of modern healthcare providers and experience
-                the future of clinical management.
-              </p>
-              <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <a
-                  href="/register"
-                  className="bg-white text-blue-600 px-10 py-4 rounded-2xl font-bold text-lg hover:bg-blue-50 transition-colors flex items-center justify-center gap-2"
-                >
-                  Get Started for Free
-                  <ArrowRight size={20} />
-                </a>
               </div>
             </div>
           </div>
