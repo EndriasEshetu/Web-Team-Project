@@ -329,4 +329,4 @@ const AvailabilityManager = () => {
   );
 };
 
-
+export default AvailabilityManager;
