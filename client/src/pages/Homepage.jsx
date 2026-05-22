@@ -2,11 +2,8 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import {
   Calendar,
-  Bell,
-  Shield,
   LayoutDashboard,
   User,
-  Settings,
   Clock,
   CheckCircle,
   FileText,
@@ -34,9 +31,10 @@ const Homepage = () => {
               </h1>
 
               <p className="text-lg text-blue-100/80 max-w-lg mx-auto lg:mx-0 leading-relaxed">
-                A complete hospital management platform for patients, doctors, and administrators. 
-                Manage appointments, doctor schedules, patient records, and healthcare operations 
-                in one secure, unified system.
+                A complete hospital management platform for patients, doctors,
+                and administrators. Manage appointments, doctor schedules,
+                patient records, and healthcare operations in one secure,
+                unified system.
               </p>
 
               <div className="flex flex-wrap justify-center lg:justify-start gap-4">
@@ -91,16 +89,30 @@ const Homepage = () => {
                       <div className="w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center">
                         <Activity size={18} className="text-white" />
                       </div>
-                      <span className="font-bold text-white text-sm">HealthFlow</span>
+                      <span className="font-bold text-white text-sm">
+                        HealthFlow
+                      </span>
                     </div>
-                    
+
                     <div className="space-y-1">
-                      <MockNavItem icon={<LayoutDashboard size={18} />} active>Dashboard</MockNavItem>
-                      <MockNavItem icon={<User size={18} />}>Profile</MockNavItem>
-                      <MockNavItem icon={<Calendar size={18} />}>Book Appointment</MockNavItem>
-                      <MockNavItem icon={<Clock size={18} />}>My Appointments</MockNavItem>
-                      <MockNavItem icon={<FileText size={18} />}>My Records</MockNavItem>
-                      <MockNavItem icon={<Stethoscope size={18} />}>My Prescriptions</MockNavItem>
+                      <MockNavItem icon={<LayoutDashboard size={18} />} active>
+                        Dashboard
+                      </MockNavItem>
+                      <MockNavItem icon={<User size={18} />}>
+                        Profile
+                      </MockNavItem>
+                      <MockNavItem icon={<Calendar size={18} />}>
+                        Book Appointment
+                      </MockNavItem>
+                      <MockNavItem icon={<Clock size={18} />}>
+                        My Appointments
+                      </MockNavItem>
+                      <MockNavItem icon={<FileText size={18} />}>
+                        My Records
+                      </MockNavItem>
+                      <MockNavItem icon={<Stethoscope size={18} />}>
+                        My Prescriptions
+                      </MockNavItem>
                     </div>
                   </div>
 
@@ -108,8 +120,12 @@ const Homepage = () => {
                   <div className="p-8 bg-[#111827]">
                     <div className="flex justify-between items-center mb-8">
                       <div>
-                        <h3 className="text-xl font-bold text-white">Hospital Dashboard</h3>
-                        <p className="text-xs text-gray-500 mt-1">Daily operations overview</p>
+                        <h3 className="text-xl font-bold text-white">
+                          Hospital Dashboard
+                        </h3>
+                        <p className="text-xs text-gray-500 mt-1">
+                          Daily operations overview
+                        </p>
                       </div>
                       <div className="w-10 h-10 rounded-full bg-gray-800 border border-gray-700"></div>
                     </div>
@@ -168,8 +184,8 @@ const Homepage = () => {
                 Everything Needed for Modern Hospital Operations
               </h2>
               <p className="text-lg text-blue-100/70">
-                Our comprehensive platform streamlines every aspect of hospital management, 
-                from patient check-in to clinical documentation.
+                Our comprehensive platform streamlines every aspect of hospital
+                management, from patient check-in to clinical documentation.
               </p>
             </div>
 
@@ -210,14 +226,14 @@ const Homepage = () => {
 
         {/* CTA SECTION */}
         <section className="max-w-7xl mx-auto px-6 md:px-12 py-24">
-          <div className="bg-gradient-to-r from-blue-600 to-blue-500 rounded-[40px] p-12 text-center relative overflow-hidden group">
+          <div className="bg-linear-to-r from-blue-600 to-blue-500 rounded-[40px] p-12 text-center relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 blur-3xl rounded-full -mr-20 -mt-20 transition-transform group-hover:scale-110"></div>
             <div className="relative">
               <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
                 Start Managing Your Hospital <br /> Smarter Today
               </h2>
               <p className="text-blue-100/90 text-lg mb-10 max-w-xl mx-auto">
-                Join our network of modern healthcare providers and experience 
+                Join our network of modern healthcare providers and experience
                 the future of clinical management.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
@@ -262,7 +278,9 @@ const FeatureCard = ({ icon, title, desc }) => (
 const StatCard = ({ value, label }) => (
   <div className="text-center p-6 rounded-2xl bg-white/5 border border-white/5">
     <p className="text-4xl font-black text-white mb-2">{value}</p>
-    <p className="text-sm font-medium text-blue-400 uppercase tracking-widest">{label}</p>
+    <p className="text-sm font-medium text-blue-400 uppercase tracking-widest">
+      {label}
+    </p>
   </div>
 );
 
@@ -281,12 +299,16 @@ const MockNavItem = ({ icon, children, active }) => (
 
 const ActivityCard = ({ icon, title, time, color }) => (
   <div className="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center gap-4 hover:border-white/20 transition-all cursor-default">
-    <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${color}`}>
+    <div
+      className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${color}`}
+    >
       {icon}
     </div>
     <div className="flex-1 min-w-0">
       <h4 className="text-white text-sm font-medium truncate">{title}</h4>
-      <p className="text-[10px] text-gray-500 mt-1 font-medium uppercase tracking-wider">{time}</p>
+      <p className="text-[10px] text-gray-500 mt-1 font-medium uppercase tracking-wider">
+        {time}
+      </p>
     </div>
   </div>
 );
