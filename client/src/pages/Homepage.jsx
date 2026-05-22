@@ -175,6 +175,119 @@ const Homepage = () => {
           </div>
         </section>
 
+        {/* TEAM MEMBERS SECTION */}
+        <section className="py-20 bg-[#21486b]">
+          <div className="max-w-5xl mx-auto px-6 md:px-12">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-white mb-4">
+                Project Team Members
+              </h2>
+              <p className="text-blue-100/70 text-lg">
+                CSE ASTU Student Web Programming Team Project
+              </p>
+            </div>
+
+            <div className="overflow-x-auto">
+              <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden">
+                <table className="w-full text-left">
+                  <thead className="bg-white/10">
+                    <tr>
+                      <th className="px-6 py-5 text-white text-lg font-semibold">
+                        Group Members
+                      </th>
+                      <th className="px-6 py-5 text-white text-lg font-semibold">
+                        ID_No.
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr className="border-t border-white/10 hover:bg-white/5 transition">
+                      <td className="px-6 py-5">
+                        <a
+                          href="https://github.com/Bekamgenene"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-300 hover:text-blue-400 font-medium"
+                        >
+                          Bekam Genene
+                        </a>
+                      </td>
+                      <td className="px-6 py-5 text-blue-100/80">
+                        UGR/30253/15
+                      </td>
+                    </tr>
+
+                    <tr className="border-t border-white/10 hover:bg-white/5 transition">
+                      <td className="px-6 py-5">
+                        <a
+                          href="https://github.com/bego-net"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-300 hover:text-blue-400 font-medium"
+                        >
+                          Begonet Debebe
+                        </a>
+                      </td>
+                      <td className="px-6 py-5 text-blue-100/80">
+                        UGR/30244/15
+                      </td>
+                    </tr>
+
+                    <tr className="border-t border-white/10 hover:bg-white/5 transition">
+                      <td className="px-6 py-5">
+                        <a
+                          href="https://github.com/EndriasEshetu"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-300 hover:text-blue-400 font-medium"
+                        >
+                          Endrias Eshetu
+                        </a>
+                      </td>
+                      <td className="px-6 py-5 text-blue-100/80">
+                        UGR/30469/15
+                      </td>
+                    </tr>
+
+                    <tr className="border-t border-white/10 hover:bg-white/5 transition">
+                      <td className="px-6 py-5">
+                        <a
+                          href="https://github.com/kenenisabeyan"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-300 hover:text-blue-400 font-medium"
+                        >
+                          Kenenisa Beyan
+                        </a>
+                      </td>
+                      <td className="px-6 py-5 text-blue-100/80">
+                        UGR/30772/15
+                      </td>
+                    </tr>
+
+                    <tr className="border-t border-white/10 hover:bg-white/5 transition">
+                      <td className="px-6 py-5">
+                        <a
+                          href="https://github.com/yeabsira23"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-300 hover:text-blue-400 font-medium"
+                        >
+                          Yeabsira Goitom
+                        </a>
+                      </td>
+                      <td className="px-6 py-5 text-blue-100/80">
+                        UGR/31390/15
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* FEATURES SECTION */}
         <section className="py-24 bg-[#14314f]/60 relative overflow-hidden">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 blur-[120px] rounded-full"></div>

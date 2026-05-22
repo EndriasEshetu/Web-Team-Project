@@ -19,7 +19,7 @@ export default function Footer() {
 
         <div className="flex gap-6 order-1 md:order-3">
           <a
-            href="https://github.com/EndriasEshetu/Hospital-management-system"
+            href="https://github.com/EndriasEshetu/Web-Team-Project"
             target="_blank"
             rel="noreferrer"
             className="hover:text-white transition font-medium"
