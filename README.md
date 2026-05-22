@@ -211,10 +211,12 @@ The app will be available at `http://localhost:5173`.
 
 ### Frontend (Vercel)
 
-1. Import the repository.
-2. Set root directory to `client`.
+1. Import the repository into Vercel.
+2. Keep the root directory at the repo root.
 3. Add `VITE_API_URL` to environment variables.
 4. Deploy.
+
+The root `vercel.json` builds the React app from `client` and serves the SPA correctly.
 
 ### Backend (Render)
 
